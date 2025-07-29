@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// Zod schema for validation
 const userValidationSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Invalid email format" }),
@@ -19,4 +18,4 @@ const userValidationSchema = z.object({
   country: z.string().min(1, { message: "Country is required" }),
 });
 
-export { userValidationSchema };
+export { userValidationSchema }

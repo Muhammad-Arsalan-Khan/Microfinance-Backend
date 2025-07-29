@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 
 const appointmentSchema = new mongoose.Schema({
@@ -18,4 +18,4 @@ const appointmentSchema = new mongoose.Schema({
 
 const appointment = mongoose.model("Appointment", appointmentSchema);
 
-export default appointment;
+export default appointment

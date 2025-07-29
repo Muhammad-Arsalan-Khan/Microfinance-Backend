@@ -1,6 +1,6 @@
 import LoanRequest from "../models/loanSchema.js"
 import { loanValidationSchema } from "../validation/loanValidation.js"
-import shortid from "shortid";
+import shortid from "shortid"
 import { generateAppointment } from "../services/appointmentService.js"
 import LoanCategory from "../models/loanCategorySchema.js"
 import path from "path"
@@ -13,7 +13,7 @@ const tempDir = path.join("temp")
 async function loanRequest(req, res) {
   const user = req.user.userId || req.params.id
   if (!user) {
-    return res.status(400).json({ msg: "User ID is required!" })
+    return res.status(400).json({ msg: "user id is required" })
   }
   try {
     let {
@@ -75,14 +75,14 @@ async function loanRequest(req, res) {
         .json({ msg: "Request amount exceeds max allowed amount" });
     }
 
-    const { loanPeriod } = categoryData;
+    const { loanPeriod } = categoryData
     if (loanPeriod < durationMonths) {
       return res
         .status(400)
         .json({ msg: "loan period exceeds maximum allowed duration" })
     }
 
-    const validationInitialPayment = 0.3 * requestedAmount;
+    const validationInitialPayment = 0.3 * requestedAmount
     if (initialPayment < validationInitialPayment) {
       return res.status(400).json({
         msg: "your initial payment must be at least 30% of the requested amount",

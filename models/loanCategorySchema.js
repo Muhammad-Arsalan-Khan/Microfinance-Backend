@@ -1,5 +1,4 @@
-// loanCategorySchema.js
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const loanCategorySchema = new mongoose.Schema({
   category: {
@@ -22,5 +21,5 @@ const loanCategorySchema = new mongoose.Schema({
   }
 });
 
-const LoanCategory = mongoose.model("LoanCategory", loanCategorySchema);
-export default LoanCategory;
+const LoanCategory = mongoose.model("LoanCategory", loanCategorySchema)
+export default LoanCategory

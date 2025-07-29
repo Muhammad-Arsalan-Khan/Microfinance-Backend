@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const dayStatusSchema = new mongoose.Schema({
     location:{
@@ -15,6 +15,6 @@ const dayStatusSchema = new mongoose.Schema({
     }
 })
 
-const dayStatus = mongoose.model("DayStatus", dayStatusSchema);
+const dayStatus = mongoose.model("DayStatus", dayStatusSchema)
 
-export default dayStatus;
+export default dayStatus

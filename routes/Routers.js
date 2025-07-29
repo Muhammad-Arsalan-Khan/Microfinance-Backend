@@ -8,9 +8,6 @@ import { loanRequest, getLoandata } from "../controllers/loanRequestController.j
 import upload from "../services/multer.js"
 import { authCheck, authCheckAdmin } from "../middleware/authCheck.js"
 
-
-
-
 //Auth
 router.post("/login", login)
 router.post("/signup", signup)
@@ -18,11 +15,11 @@ router.patch('/otp/:id', OTP )
 
 //user
 //Loan request
-// router.post("/loanrequest/:id", [authCheck ,upload.single("image")], loanRequest) //upload.single("statement"),  LoanRequestMiddleware 
 router.route("/loanrequest/:id")
   .get(authCheck, getLoandata)
   .post([authCheck, , upload.single("image")] , loanRequest) 
 router.get("/loancategories", authCheck, getloancategories)
+
 
 //admin
 //admin loancategories
@@ -36,7 +33,6 @@ router.route("/loancategories/admin/:id")
 router.patch("/daystatus/admin", authCheckAdmin ,dayStatusCon )
 //admin loan approved
 router.patch("/loanapproved/admin/:id", authCheckAdmin ,loanApproved )
-
 
 
 

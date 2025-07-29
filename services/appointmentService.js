@@ -1,25 +1,24 @@
-import { addDays, format, getDay } from 'date-fns';
-import Appointment from '../models/Appointment.js';
-import DayStatus from '../models/DayStatusSchema.js';
+import { addDays, format, getDay } from 'date-fns'
+import Appointment from '../models/Appointment.js'
+import DayStatus from '../models/DayStatusSchema.js'
 
 const TIME_SLOTS = [
   '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
   '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'
 ];
 
-const CAMPUS = "HeadOffice";
-const MAX_LOOKAHEAD_DAYS = 30; // safety limit to prevent infinite loop
+const CAMPUS = "HeadOffice"
+const MAX_LOOKAHEAD_DAYS = 30
 
 export const generateAppointment = async () => {
   for (let i = 0; i <= MAX_LOOKAHEAD_DAYS; i++) {
     const currentDate = addDays(new Date(), i);
-    const dayOfWeek = getDay(currentDate); // 0 = Sunday, 6 = Saturday
+    const dayOfWeek = getDay(currentDate)
 
-    if (dayOfWeek === 0) continue; // Skip Sunday
+    if (dayOfWeek === 0) continue 
 
     const dateStr = format(currentDate, 'dd-MM-yyyy');
 
-    // Check if the day is CLOSED by admin
     const isClosed = await DayStatus.exists({
       location: CAMPUS,
       date: dateStr,
@@ -28,34 +27,27 @@ export const generateAppointment = async () => {
 
     if (isClosed) continue;
     
-    //console.log('Looking for appointments on:', dateStr);
-    // Check how many slots already booked
-    const appointments = await Appointment.find({ location: CAMPUS, date: dateStr }); //date: { $regex: '18-07-2025' }
-    //console.log('Appointments found:', appointments);
+    const appointments = await Appointment.find({ location: CAMPUS, date: dateStr })
 
-    if (appointments.length >= TIME_SLOTS.length) continue;
+    if (appointments.length >= TIME_SLOTS.length) continue
 
-    const usedSlots = new Set(appointments.map(a => a.timeSlot.trim()));
-    //console.log("usedslots",usedSlots)
+    const usedSlots = new Set(appointments.map(a => a.timeSlot.trim()))
     const freeSlot = TIME_SLOTS.find(slot => !usedSlots.has(slot));
-    //console.log("free slot",freeSlot)
-
+  
     if (!freeSlot) continue;
 
-    // Found a free slot, book it!
     const appointment = await Appointment.create({
       location: CAMPUS,
       date: dateStr,
       timeSlot: freeSlot,
     });
 
-    return { success: true, appointment };
+    return { success: true, appointment }
   }
 
-  // Even after MAX_LOOKAHEAD_DAYS no slot found (very rare)
   return {
     success: false,
-    message: 'No available slots found in this month',
-  };
-};
+    message: 'no available slots found in this month',
+  }
+}
 

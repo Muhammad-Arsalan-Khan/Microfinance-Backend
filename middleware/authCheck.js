@@ -5,7 +5,7 @@ import User from "../models/userSchema.js"
 async function authCheck(req, res, next) {
   const token = req.cookies?.token
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized access " })
+    return res.status(401).json({ message: " unauthorized access " })
   }
   const userData = verifyUser(token)
   if (!userData) {
@@ -26,7 +26,7 @@ async function authCheckAdmin(req, res, next) {
       const user = await User.findById(isVerify.userId)
       if (!user.isAdmin) {
         return res.json({
-          message: "Only Admin can access this API",
+          message: "only admin can access this API",
           status: false,
         });
       }

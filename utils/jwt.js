@@ -1,7 +1,6 @@
-import  jwt  from "jsonwebtoken";
+import  jwt  from "jsonwebtoken"
 
 function setUser (userData) {
-    // console.log(userData)
     return jwt.sign(
       {
         userId: userData,
@@ -24,10 +23,10 @@ function verifyUser(token) {
         return null;
     }
     try {
-        return jwt.verify(token, process.env.JWT_SECRET);
+        return jwt.verify(token, process.env.JWT_SECRET)
     } catch (error) {
         return null;
     }
 }
 
-export { setUser, verifyUser, setAdmin };
+export { setUser, verifyUser, setAdmin }

@@ -1,21 +1,18 @@
-import User from "../models/userSchema.js";
-import { userValidationSchema } from "../validation/userValidation.js";
-import bcrypt from "bcryptjs";
-import { setUser, setAdmin } from "../utils/jwt.js";
-import { verifyEmail } from "../nodemailer/nodemailer.js";
-import { create } from "qrcode";
+import User from "../models/userSchema.js"
+import { userValidationSchema } from "../validation/userValidation.js"
+import bcrypt from "bcryptjs"
+import { setUser, setAdmin } from "../utils/jwt.js"
+import { verifyEmail } from "../nodemailer/nodemailer.js"
+import { create } from "qrcode"
 
-let otpGenrate = Math.floor(100000 + Math.random() * 900000);
-// function otpGenrate() {
-//   return Math.floor(100000 + Math.random() * 900000);
-// }
+let otpGenrate = Math.floor(100000 + Math.random() * 900000)
 
 async function login(req, res) {
   try {
-    const { email, cnic, password } = req.body;
+    const { email, cnic, password } = req.body
 
     if (!email || !password || !cnic) {
-      return res.status(400).json({ message: "field are required" });
+      return res.status(400).json({ message: "field are required" })
     }
 
     const existingUser = await User.findOne({
@@ -41,7 +38,7 @@ async function login(req, res) {
       existingUser.password
     );
     if (!isPasswordMatch) {
-      return res.status(400).json({ message: "invalid email password" });
+      return res.status(400).json({ message: "invalid email password" })
     }
     const userData = {
       username: existingUser.name,
@@ -58,20 +55,20 @@ async function login(req, res) {
       loanCompleted: existingUser.loanCompleted,
       loanId: existingUser.loanId,
     };
-    const id = userData.id;
-    const token = setUser(id);
-    res.cookie("token", token);
+    const id = userData.id
+    const token = setUser(id)
+    res.cookie("token", token)
     if (existingUser.isAdmin) {
-      const isVerified = existingUser.isVerified;
-      const Verified = setAdmin(isVerified);
-      res.cookie("isVerified", Verified);
+      const isVerified = existingUser.isVerified
+      const Verified = setAdmin(isVerified)
+      res.cookie("isVerified", Verified)
     }
     res.status(200).json({
-      message: "Login successful",
+      message: "login successful",
       user: userData,
     });
   } catch (error) {
-    console.log(error, error.message, error.code);
+    console.log(error, error.message, error.code)
     return res.status(500).json({
       message: "something went wrong",
       error: error.message,
@@ -84,10 +81,10 @@ async function signup(req, res) {
     const { name, email, cnic, password, phone, address, city, country } =
       req.body;
     const data = { name, email, cnic, password, phone, address, city, country };
-    const validatedData = userValidationSchema.parse(data);
-    const validEmail = validatedData.email;
-    const validPassword = validatedData.password;
-    const validCnic = validatedData.cnic;
+    const validatedData = userValidationSchema.parse(data)
+    const validEmail = validatedData.email
+    const validPassword = validatedData.password
+    const validCnic = validatedData.cnic
     const existingUser = await User.findOne({
       $and: [{ email: validEmail }, { cnic: validCnic }],
     });
@@ -97,19 +94,18 @@ async function signup(req, res) {
       });
     }
     const hashedPassword = await bcrypt.hash(validPassword, 10);
-    const newUser = new User({ ...validatedData, password: hashedPassword });
+    const newUser = new User({ ...validatedData, password: hashedPassword })
     await newUser.save();
     verifyEmail(newUser.email, otpGenrate)
     res
       .status(201)
-      .json({ message: "User registered successfully", data: newUser._id || "signup success" })
+      .json({ message: "user registered successfully", data: newUser._id || "signup success" })
   } catch (error) {
     if (error.code === 11000) {
       return res.status(400).json({
         message: "account already exists change email or cnic",
       });
     }
-    // console.error("Error during signup:", error, error.message, error.code);
     return res.status(500).json({
       message: "something went wrong",
       error: error.message,
@@ -149,10 +145,10 @@ async function OTP(req, res) {
   } catch (error) {
     console.error("Error updating user:", error, error.message, error.code);
     return res.status(500).json({
-      message: "something went wrong while OPT Verification",
+      message: "something went wrong while OPT verification",
       error: error.message,
     });
   }
 }
 
-export { login, signup, OTP };
+export { login, signup, OTP }

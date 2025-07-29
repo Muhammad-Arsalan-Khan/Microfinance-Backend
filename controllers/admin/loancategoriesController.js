@@ -61,9 +61,9 @@ async function updatecategory(req, res) {
       updateCat: UpdatedCategory,
     })
   } catch (err) {
-    console.error("Error updating category:", err, err.message, err.code)
+    console.error("error updating category:", err, err.message, err.code)
     return res.status(500).json({
-      message: "Something went wrong while updating the category",
+      message: "something went wrong while updating the category",
       error: err.message,
     });
   }
@@ -74,9 +74,9 @@ async function getloancategories(req, res) {
     const response = await LoanCategory.find()
     return res.json({msg: "all loan categoray ", data : response})
   } catch (error) {
-    console.error("Error getting category:", err, err.message, err.code)
+    console.error("error getting category:", err, err.message, err.code)
     return res.status(500).json({
-      message: "Something went wrong while getting the category",
+      message: "something went wrong while getting the category",
       error: err.message,
     });
   }

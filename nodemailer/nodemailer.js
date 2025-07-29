@@ -1,7 +1,6 @@
-import nodemailer from "nodemailer";
+import nodemailer from "nodemailer"
 
 export function verifyEmail(userEmail, otpGenrate) {
-  //console.log(userEmail, opt)
   const otp = otpGenrate;
   const receiverEmail = userEmail;
 
@@ -91,13 +90,12 @@ export function verifyEmail(userEmail, otpGenrate) {
 `,
   };
 
-  //   console.log(mailOptions)
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log("Email error:", error);
+      console.log("email error:", error);
     } else {
-      console.log("Email res:", info.response);
+      console.log("email res:", info.response);
     }
   });
 }

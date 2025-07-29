@@ -1,24 +1,22 @@
-import multer from 'multer';
-import fs from "fs";
-import path from "path";
+import multer from 'multer'
+import fs from "fs"
+import path from "path"
 
+const uploadDir = path.join("uploads")
 
-const uploadDir = path.join("uploads");
-
-// Check if folder exists, if not then create
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
-// Multer Storage Configuration
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');  // Temporarily store image in the 'uploads' directory
+    cb(null, 'uploads/')
   },
   filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`); // Add timestamp to prevent filename conflicts
+    cb(null, `${Date.now()}-${file.originalname}`)
   },
 });
 
-const upload = multer({ storage: storage }) // 'image' is the field name for image
+const upload = multer({ storage: storage }) 
 
-export default upload;
+export default upload
