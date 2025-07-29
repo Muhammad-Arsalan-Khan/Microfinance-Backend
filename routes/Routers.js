@@ -21,7 +21,7 @@ router.patch('/otp/:id', OTP )
 // router.post("/loanrequest/:id", [authCheck ,upload.single("image")], loanRequest) //upload.single("statement"),  LoanRequestMiddleware 
 router.route("/loanrequest/:id")
   .get(authCheck, getLoandata)
-  .post([authCheck ,upload.single("image")], loanRequest)
+  .post([authCheck, , upload.single("image")] , loanRequest) 
 router.get("/loancategories", authCheck, getloancategories)
 
 //admin
