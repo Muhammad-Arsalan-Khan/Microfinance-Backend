@@ -165,4 +165,5 @@ async function getLoandata(req, res){
   }
 }
 
-export { loanRequest, getLoandata }
+
+export { loanRequest, getLoandata, }
