@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import { connectMongoDB } from "./connection/db.js"
-import { logReqRes } from './middleware/log.js';
+//import { logReqRes } from './middleware/log.js';
 import MFroutes from "./routes/Routers.js"
 
 dotenv.config();
@@ -11,10 +11,10 @@ dotenv.config();
 const app = express()
 
 //Middleware
-app.use(logReqRes("log.txt"))
+//app.use(logReqRes("log.txt"))
 
 const corsOptions = {
-  origin: 'http://localhost:5173',   
+  origin: '*',   //http://localhost:5173
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH',], 
   credentials: true, 
 };
