@@ -1,9 +1,3 @@
-
----
-
-## ✅ `README.md` for **Backend** (`microfinance-loan-app-backend`)
-
-```markdown
 # Microfinance Loan Application – Backend
 
 This is the **backend** for the Microfinance Loan System (*Sood Se Pak*). It provides REST APIs for user authentication, loan application processing, file uploads, QR code generation, PDF generation, admin controls, and more.
