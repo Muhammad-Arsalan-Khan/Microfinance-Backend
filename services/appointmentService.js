@@ -1,5 +1,5 @@
 import { addDays, format, getDay } from 'date-fns'
-import Appointment from '../models/Appointment.js'
+import Appointment from '../models/appointment.js'
 import DayStatus from '../models/DayStatusSchema.js'
 
 const TIME_SLOTS = [
