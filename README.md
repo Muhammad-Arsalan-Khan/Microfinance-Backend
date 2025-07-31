@@ -27,8 +27,7 @@ This is the **backend** for the Microfinance Loan System (*Sood Se Pak*). It pro
 
 ```bash
 # Step 1: Clone the repository
-git clone https://github.com/your-username/microfinance-loan-app-backend.git
-cd microfinance-loan-app-backend
+git clone https://github.com/Muhammad-Arsalan-Khan/Microfinance-Backend.git
 
 # Step 2: Install dependencies
 npm install
