@@ -8,7 +8,7 @@ const TIME_SLOTS = [
 ];
 
 const CAMPUS = "HeadOffice"
-const MAX_LOOKAHEAD_DAYS = 30
+const MAX_LOOKAHEAD_DAYS = 6
 
 export const generateAppointment = async () => {
   for (let i = 0; i <= MAX_LOOKAHEAD_DAYS; i++) {
