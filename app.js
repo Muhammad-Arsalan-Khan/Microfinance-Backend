@@ -14,7 +14,7 @@ const app = express()
 //app.use(logReqRes("log.txt"))
 
 const corsOptions = {
-  origin: '*',   //http://localhost:5173
+  origin: 'https://microfinanc.netlify.app/',  
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH',], 
   credentials: true, 
 };
