@@ -114,8 +114,8 @@ async function signup(req, res) {
 }
 
 async function OTP(req, res) {
-  const userId = req.params.id;
-  console.log("userId:", userId);
+  const userId = req.params.id
+  console.log("userId:", userId)
   try {
     const { isVerified, otpValue } = req.body;
     console.log("genrated:", otpGenrate, "otpValue:", otpValue);
@@ -132,7 +132,7 @@ async function OTP(req, res) {
         isVerified,
       },
       { new: true }
-    );
+    )
     if (!updatedUser) {
       return res.status(404).json({ message: "user not found" });
     }

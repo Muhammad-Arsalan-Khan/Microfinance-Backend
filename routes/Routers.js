@@ -39,10 +39,10 @@ router.get("/loanrequest", authCheckAdmin, getAllLoanApllication)
 router
   .route("/loancategories/admin/:id")
   .delete(authCheckAdmin, deletedcategory)
-  .put(authCheckAdmin, updatecategory);
+  .put(authCheckAdmin, updatecategory)
 //admin day status
 router.patch("/admin/daystatus", authCheckAdmin,  dayStatusCon) 
 //admin loan approved
-router.patch("/admin/loanapproved/:id", authCheckAdmin, loanApproved);
+router.patch("/admin/loanapproved/:id", authCheckAdmin, loanApproved)
 
 export default router;

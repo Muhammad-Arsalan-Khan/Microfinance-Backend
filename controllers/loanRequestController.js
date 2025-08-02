@@ -7,7 +7,7 @@ import path from "path"
 import { imgUplodefnx } from "../services/imgUplode.js"
 import { dataToQrFnx } from "../services/qrURL.js"
 import User from "../models/userSchema.js"
-const tempDir = path.join("temp")
+// const tempDir = path.join("temp")
 
 
 async function loanRequest(req, res) {
@@ -119,7 +119,8 @@ async function loanRequest(req, res) {
       appointmentTime,
     }
 
-    qrCodeURL = await dataToQrFnx(tempDir, qrJson, token) || "qrCodeURL"
+    // qrCodeURL = await dataToQrFnx(tempDir, qrJson, token) || "qrCodeURL"
+    qrCodeURL = await dataToQrFnx(qrJson, token) || "qrCodeURL"
 
     const data = {
       ...qrJson,

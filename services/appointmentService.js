@@ -1,5 +1,5 @@
 import { addDays, format, getDay } from 'date-fns'
-import Appointment from '../models/Appointment.js'
+import Appointment from '../models/appointment.js'
 import DayStatus from '../models/DayStatusSchema.js'
 
 const TIME_SLOTS = [
@@ -8,16 +8,16 @@ const TIME_SLOTS = [
 ];
 
 const CAMPUS = "HeadOffice"
-const MAX_LOOKAHEAD_DAYS = 30
+const MAX_LOOKAHEAD_DAYS = 6
 
 export const generateAppointment = async () => {
   for (let i = 0; i <= MAX_LOOKAHEAD_DAYS; i++) {
-    const currentDate = addDays(new Date(), i);
+    const currentDate = addDays(new Date(), i)
     const dayOfWeek = getDay(currentDate)
 
     if (dayOfWeek === 0) continue 
 
-    const dateStr = format(currentDate, 'dd-MM-yyyy');
+    const dateStr = format(currentDate, 'dd-MM-yyyy')
 
     const isClosed = await DayStatus.exists({
       location: CAMPUS,
