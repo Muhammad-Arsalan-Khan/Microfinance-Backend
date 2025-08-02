@@ -57,11 +57,19 @@ async function login(req, res) {
     };
     const id = userData.id
     const token = setUser(id)
-    res.cookie("token", token)
+    res.cookie("token", token,{
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === '11817211',
+    sameSite: 'Strict',
+    })
     if (existingUser.isAdmin) {
       const isVerified = existingUser.isVerified
       const Verified = setAdmin(isVerified)
-      res.cookie("isVerified", Verified)
+      res.cookie("isVerified", Verified,{
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === '11817211',
+      sameSite: 'Strict',
+    })
     }
     res.status(200).json({
       message: "login successful",
