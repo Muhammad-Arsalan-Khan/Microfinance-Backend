@@ -61,7 +61,8 @@ async function login(req, res) {
     httpOnly: true, 
     secure: true,
     sameSite: 'None',
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    domain: '.microfinance-backend-fawn.vercel.app'
     })
     if (existingUser.isAdmin) {
       const isVerified = existingUser.isVerified
@@ -70,7 +71,8 @@ async function login(req, res) {
       httpOnly: true, 
       secure: true,
       sameSite: 'None',
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      domain: '.microfinance-backend-fawn.vercel.app'
     })
     }
     res.status(200).json({
