@@ -61,7 +61,7 @@ async function login(req, res) {
     httpOnly: true, 
     secure: process.env.NODE_ENV === '11817211',
     sameSite: 'Strict',
-    expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     })
     if (existingUser.isAdmin) {
       const isVerified = existingUser.isVerified
@@ -70,7 +70,7 @@ async function login(req, res) {
       httpOnly: true, 
       secure: process.env.NODE_ENV === '11817211',
       sameSite: 'Strict',
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     })
     }
     res.status(200).json({
