@@ -1,45 +1,32 @@
-import express from 'express';
+import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser'
 import { connectMongoDB } from "./connection/db.js"
-//import { logReqRes } from './middleware/log.js';
 import MFroutes from "./routes/Routers.js"
 
-dotenv.config();
-
+dotenv.config()
 const app = express()
 
-//Middleware
-//app.use(logReqRes("log.txt"))
-
 const corsOptions = {
-  origin: 'https://microfinanc.netlify.app/',  
+  origin: 'https://microfinanc.netlify.app',  
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH',], 
   credentials: true, 
 };
 
-app.use(express.json());
+app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors(corsOptions))
 app.use(cookieParser())
 
-//database connection
-//connectMongoDB().then(()=>{console.log("connect to MongoDB")})
-
-
-
 //Route
-app.use("/api", MFroutes);
+app.use("/api", MFroutes)
 app.use("/",(req, res) => res.json({msg: "server start"}));
 
-
 const PORT = process.env.PORT || 8080
-// app.listen(PORT, ()=> console.log(`server start at ${PORT}`))
 connectMongoDB()
   .then(() => {
-    console.log("MongoDB connected");
-
+    console.log("MongoDB connected")
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
   })
   .catch((err) => {
