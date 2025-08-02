@@ -59,8 +59,8 @@ async function login(req, res) {
     const token = setUser(id)
     res.cookie("token", token,{
     httpOnly: true, 
-    secure: process.env.NODE_ENV === '11817211',
-    sameSite: 'Strict',
+    secure: true,
+    sameSite: 'None',
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     })
     if (existingUser.isAdmin) {
@@ -68,8 +68,8 @@ async function login(req, res) {
       const Verified = setAdmin(isVerified)
       res.cookie("isVerified", Verified,{
       httpOnly: true, 
-      secure: process.env.NODE_ENV === '11817211',
-      sameSite: 'Strict',
+      secure: true,
+      sameSite: 'None',
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     })
     }
