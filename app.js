@@ -9,7 +9,7 @@ dotenv.config()
 const app = express()
 
 const corsOptions = {
-  origin: 'https://microfinanc.netlify.app',  
+  origin: 'https://microfinanc.netlify.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH',], 
   credentials: true, 
 };
