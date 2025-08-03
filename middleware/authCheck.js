@@ -11,7 +11,7 @@ export const authCheck = async (req, res, next) => {
             return res.status(401).json({ message: "invalid token" })
           }
         if (userData?.userId) {
-            console.log(userData.id)
+            // console.log("id",userData.userId)
             req.user = userData
             next()
         } else {

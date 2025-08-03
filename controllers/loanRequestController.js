@@ -3,7 +3,7 @@ import { loanValidationSchema } from "../validation/loanValidation.js"
 import shortid from "shortid"
 import { generateAppointment } from "../services/appointmentService.js"
 import LoanCategory from "../models/loanCategorySchema.js"
-import path from "path"
+// import path from "path"
 import { imgUplodefnx } from "../services/imgUplode.js"
 import { dataToQrFnx } from "../services/qrURL.js"
 import User from "../models/userSchema.js"
@@ -103,8 +103,11 @@ async function loanRequest(req, res) {
     appointmentLocation = result.appointment.location
     appointmentTime = result.appointment.timeSlot
 
-    const file = req.file;
-    salarySlipURL = await imgUplodefnx(file, "image/") || "statement"
+    // const file = req.file
+    // console.log("file", file)
+    // salarySlipURL = await imgUplodefnx(file, "image/") || "statement"
+    salarySlipURL = await imgUplodefnx(req.file.buffer) || "statement" //https://statement.jpg
+    // console.log("sal",salarySlipURL)
 
     const qrJson = {
       user,
@@ -144,7 +147,7 @@ async function loanRequest(req, res) {
 
     return res.status(201).json({ msg: "loan request successful", data: loan })
   } catch (error) {
-    console.log(error, error.message, error.code)
+    console.log("catch err",error, error.message, error.code)
     return res.status(500).json({
       message: "something went wrong",
       error: error.message,
