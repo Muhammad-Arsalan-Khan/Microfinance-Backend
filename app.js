@@ -8,15 +8,15 @@ import MFroutes from "./routes/Routers.js"
 dotenv.config()
 const app = express()
 
-const corsOptions = {
-  origin: 'https://microfinanc.netlify.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH',], 
-  credentials: true, 
-};
+// const corsOptions = {
+//   origin: 'https://microfinanc.netlify.app',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH',], 
+//   credentials: true, 
+// }
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(cookieParser())
 
 //Route
