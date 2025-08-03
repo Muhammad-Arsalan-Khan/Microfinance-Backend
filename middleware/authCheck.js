@@ -4,11 +4,14 @@ import User from "../models/userSchema.js"
 export const authCheck = async (req, res, next) => {
     try {
          const token = req.headers.authorization.split(" ")[1]
+        //  console.log("token",token)
          const userData = verifyUser(token)
+        //  console.log("userData",userData)
          if (!userData) {
             return res.status(401).json({ message: "invalid token" })
           }
-        if (userData?.id) {
+        if (userData?.userId) {
+            console.log(userData.id)
             req.user = userData
             next()
         } else {
@@ -18,7 +21,7 @@ export const authCheck = async (req, res, next) => {
         }
     } catch (error) {
         res.json({
-            message: "unAuthorization user"
+            message: "catch unAuthorization user"
         })
     }
 
@@ -32,8 +35,8 @@ export const authCheckAdmin = async (req, res, next) => {
             return res.status(401).json({ message: "invalid token" })
           }
 
-        if (isVerify?.id) {
-            const user = await User.findById(isVerify.id)
+        if (isVerify?.userId) {
+            const user = await User.findById(isVerify.userId)
 
             if (!user.isAdmin) {
                 return res.json({
