@@ -57,32 +57,35 @@ async function login(req, res) {
     };
     const id = userData.id
     const token = setUser(id)
-    res.cookie("token", token
-    ,{
-    httpOnly: true, 
-    secure: true,
-    sameSite: 'None',
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    domain: 'microfinanc.netlify.app'
-    }
-    )
+    // res.cookie("token", token
+    // ,{
+    // httpOnly: true, 
+    // secure: true,
+    // sameSite: 'None',
+    // expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    // domain: 'microfinanc.netlify.app'
+    // }
+    //)
+    let Verified;
     if (existingUser.isAdmin) {
       const isVerified = existingUser.isVerified
-      const Verified = setAdmin(isVerified)
-      res.cookie("isVerified", Verified
-      ,{
-      httpOnly: true, 
-      secure: true,
-      sameSite: 'None',
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      domain: 'microfinanc.netlify.app'
-      }
-    )
+       Verified = setAdmin(isVerified)
+    //   res.cookie("isVerified", Verified
+    //   ,{
+    //   httpOnly: true, 
+    //   secure: true,
+    //   sameSite: 'None',
+    //   expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    //   domain: 'microfinanc.netlify.app'
+    //   }
+    // )
     }
     res.status(200).json({
       message: "login successful",
       user: userData,
-    });
+      token,
+      Verified
+    })
   } catch (error) {
     console.log(error, error.message, error.code)
     return res.status(500).json({
