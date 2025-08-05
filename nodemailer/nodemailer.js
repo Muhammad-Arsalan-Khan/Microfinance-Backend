@@ -1,22 +1,30 @@
 import nodemailer from "nodemailer"
+import EmailOTP from "../models/emailSchema.js"
 
-export function verifyEmail(userEmail, otpGenrate) {
-  const otp = otpGenrate;
-  const receiverEmail = userEmail;
+export async function verifyEmail(userEmail, otp) {
+  try {
+    await EmailOTP.deleteMany({ email : userEmail })
+    const otpEntry = new EmailOTP({
+      email: userEmail,
+      otp: otp,
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000), //10
+    });
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.NodeMailer_Email,
-      pass: process.env.NodeMailer_PassKey,
-    },
-  });
+    await otpEntry.save()
 
-  const mailOptions = {
-    from: process.env.NodeMailer_Email,
-    to: receiverEmail,
-    subject: "Micro Finance OTP",
-    html: `<!DOCTYPE html>
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.NodeMailer_Email,
+        pass: process.env.NodeMailer_PassKey,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.NodeMailer_Email,
+      to: userEmail,
+      subject: "Micro Finance OTP",
+      html: `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -70,7 +78,7 @@ export function verifyEmail(userEmail, otpGenrate) {
     </div>
 
     <p>Dear Customer,</p>
-    <p>We are sending you a One-Time Password (OTP) to verify your identity. Please find it below:</p>
+    <p>We are sending you a One-Time Password (OTP) to verify your identity. Please find it below</p>
 
     <div class="otp-box">
       <strong>${otp}</strong>
@@ -79,23 +87,22 @@ export function verifyEmail(userEmail, otpGenrate) {
     <p>This code is valid for only 10 minutes. Please do not share it with anyone.</p>
 
     <p>Thank you,<br>
-    Microfinance Team</p>
+    Microfinance Team</p>  
 
     <div class="footer">
-      &copy; 2025 Microfinance. All rights reserved.
+      &copy; ${new Date().getFullYear()} Microfinance. All rights reserved.
     </div>
   </div>
 </body>
-</html>
-`,
-  };
+</html>`,
+    };
 
+    await transporter.sendMail(mailOptions)
+    console.log("OTP email sent successfully")
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log("email error:", error);
-    } else {
-      console.log("email res:", info.response);
-    }
-  });
+  } catch (error) {
+    console.error("OTP email sending error", error)
+    throw new Error("Unable to send OTP")
+  }
 }
+

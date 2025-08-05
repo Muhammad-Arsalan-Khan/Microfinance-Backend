@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs"
 import { setUser, setAdmin } from "../utils/jwt.js"
 import { verifyEmail } from "../nodemailer/nodemailer.js"
 import { create } from "qrcode"
+import EmailOTP from "../models/emailSchema.js"
 
 let otpGenrate = Math.floor(100000 + Math.random() * 900000)
 
@@ -26,10 +27,11 @@ async function login(req, res) {
     }
 
     if (!existingUser.isVerified) {
-      verifyEmail(existingUser.email, otpGenrate)
+      await verifyEmail(existingUser.email, otpGenrate)
       return res.status(401).json({
         message: "unAuthorized user",
         data: existingUser._id,
+        email: existingUser.email
       });
     }
 
@@ -114,11 +116,11 @@ async function signup(req, res) {
     }
     const hashedPassword = await bcrypt.hash(validPassword, 10);
     const newUser = new User({ ...validatedData, password: hashedPassword })
-    await newUser.save();
-    verifyEmail(newUser.email, otpGenrate)
+    await newUser.save()
+    await verifyEmail(newUser.email, otpGenrate)
     res
       .status(201)
-      .json({ message: "user registered successfully", data: newUser._id || "signup success" })
+      .json({ message: "user registered successfully", data: newUser._id, email: newUser.email  || "signup success" })
   } catch (error) {
     if (error.code === 11000) {
       return res.status(400).json({
@@ -133,40 +135,57 @@ async function signup(req, res) {
 }
 
 async function OTP(req, res) {
-  const userId = req.params.id
-  console.log("userId:", userId)
   try {
-    const { isVerified, otpValue } = req.body;
-    console.log("genrated:", otpGenrate, "otpValue:", otpValue);
-    const OtpValue = Number(otpValue);
-    if (OtpValue !== otpGenrate) {
-      return res.status(401).json({ message: "wrong OTP" });
+    const userId = req.params.id
+    const { email , otp } = req.body
+    console.log("gen",otpGenrate, "useremail", email)
+    const otpDoc = await EmailOTP.findOne({ email, otp })
+    console.log("otpDoc", otpDoc)
+    if (!otpDoc) {
+       return res.status(400).json({
+       message: "invalid OTP",
+       error: otpDoc.message,
+    })
     }
-    if (!userId) {
-      return res.status(400).json({ message: "user id is required" });
+
+    if (otpDoc.isUsed) {
+       return res.status(400).json({
+       message: "OTP already used",
+       error: otpDoc.message,
+    })
     }
+
+    if (otpDoc.expiresAt < new Date()) {
+       return res.status(400).json({
+       message: "OTP has expired",
+       error: otpDoc.message,
+    })
+    }
+
+    otpDoc.isUsed = true
+    await otpDoc.save()
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        isVerified,
+        isVerified : true
       },
       { new: true }
     )
     if (!updatedUser) {
       return res.status(404).json({ message: "user not found" });
     }
-    console.log("user update successfully", updatedUser);
-    otpGenrate = null;
+    console.log("update", updatedUser)
+    // await EmailOTP.deleteMany({ email : userEmail })
     return res.status(200).json({
       message: "Approved",
       updateUser: updatedUser,
-    });
+    })
   } catch (error) {
     console.error("Error updating user:", error, error.message, error.code);
     return res.status(500).json({
       message: "something went wrong while OPT verification",
       error: error.message,
-    });
+    })
   }
 }
 
